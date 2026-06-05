@@ -54,15 +54,32 @@ Single function handling all damage. Key pipeline:
 2. Base damage from attacker stats + skill
 3. Defense subtracted
 4. Multipliers applied (`AttackDamageIncrease`, `DamageReceiveDecrement`)
-5. PvP-specific bonuses (`FinalDamageIncreasePvp`)
+5. **Custom:** PvP class vs class multiplier (`DamageReceiveFromX`) applied after step 4
+6. PvP-specific bonuses (`FinalDamageIncreasePvp`)
+
+`GetClassDamageReceiveStat(Player attacker)` — private helper that maps attacker's class number (raw byte) to the correct `DamageReceiveFromX` attribute. Uses raw bytes to avoid a dependency from `GameLogic` on `Persistence.Initialization`.
 
 ### Attribute system
 `src/GameLogic/Attributes/Stats.cs` — all `AttributeDefinition` constants
+Each `AttributeDefinition` is a named slot (like a variable declaration) with a permanent `Guid` as its database key. The actual per-class values are stored separately as `ConstValueAttribute` entries.
+**Custom attributes added:** `DamageReceiveFromDarkKnightDecrement`, `DamageReceiveFromDarkWizardDecrement`, `DamageReceiveFromFairyElfDecrement`, `DamageReceiveFromMagicGladiatorDecrement`, `DamageReceiveFromDarkLordDecrement`, `DamageReceiveFromRageFighterDecrement`
+
 `src/DataModel/Configuration/` — configuration models (CharacterClass, GameConfiguration, etc.)
 
 ### Character class initialization
 `src/Persistence/Initialization/CharacterClasses/` — one file per class
 Each class defines base stats, stat scaling formulas, and attribute relationships.
+`CharacterClassInitialization.cs` → `AddCommonBaseAttributeValues()` — shared block called by every class. **Custom:** seeds all 6 `DamageReceiveFromX` attributes at `1.0f` (neutral) for fresh DB installs.
+
+### Update plugins
+`src/Persistence/Initialization/Updates/` — one plugin per schema change
+Each plugin has a version number (`UpdateVersion` enum), runs once on existing databases when triggered from admin panel → Updates, and is idempotent (safe to run twice).
+**Custom plugins:**
+- `CustomServerRatesUpdatePlugIn` (v100) — sets experience ×1000, drop delta 10, option level 4
+- `CustomJewelRatesUpdatePlugIn` (v101) — sets Soul Jewel 70%/30%/+8 reset
+- `AddPvpClassMultipliersUpdatePlugIn` (v84) — registers the 6 new `AttributeDefinition`s and seeds `1.0f` on every existing character class
+
+**Version numbering:** upstream uses 1–99, custom starts at 100. Exception: v84 sits between upstream entries because it directly extends the character class system.
 
 ### Season 6 game data
 `src/Persistence/Initialization/VersionSeasonSix/` — maps, monsters, items, skills, quests
@@ -105,22 +122,19 @@ All classes share: HP = `base + (VIT × multiplier) + (Level × multiplier)`
 
 ## Known PvP Imbalances
 
-1. **Dark Wizard burst** — `ENE÷4` max damage with full ENE build hits extremely hard. No class-specific resistance exists.
-2. **Fairy Elf defense** — `AGI÷10` is 3× worse than Dark Knight (`AGI÷3`). Elf is intentionally weak in 1v1 PvP (support/buffer role) but the gap is severe.
-3. **No class vs class multiplier system** — OpenMU has no mechanism to apply different damage multipliers based on attacker/defender class combination. This is the primary planned feature.
+1. **Dark Wizard burst** — `ENE÷4` max damage with full ENE build hits extremely hard.
+2. **Fairy Elf defense** — `AGI÷10` is 3× worse than Dark Knight (`AGI÷3`). Intentionally weak in 1v1 but the gap is severe.
 
 ---
 
-## Planned Customizations
+## Implemented Customizations
 
-### class vs class PvP multipliers (`custom/pvp-balance`)
-Add per-matchup damage reduction attributes to the character class system.
+### Class vs class PvP multipliers (`custom/pvp-balance`) — ✅ implemented
+Per-matchup damage reduction via `DamageReceiveFromX` attributes on each character class.
+All values default to `1.0` (neutral). Tune per-matchup in admin panel → Configuration → Character Classes.
 Spec: `docs/specs/pvp-balance.md`
 
-Files to change:
-- `src/GameLogic/Attributes/Stats.cs` — new AttributeDefinitions
-- `src/GameLogic/AttackableExtensions.cs` — apply multipliers in `CalculateDamageAsync`
-- `src/Persistence/Initialization/CharacterClasses/*.cs` — set default values per class
+**How to tune:** find the defending class in the admin panel, locate the `DamageReceiveFromX` attribute for the attacker class, set a value below 1.0 to reduce incoming damage (e.g. `0.75` = 25% reduction).
 
 ---
 
