@@ -1,7 +1,9 @@
 # OpenMU — Custom Server Context
 
 ## Working Agreement
-- **Never commit and push in the same step.** Always commit first, show the diff summary, and wait for explicit approval before pushing.
+- **The reviewer is God.** His approval is required at every step. No exceptions.
+- **Before committing:** show the diff and wait for approval.
+- **Before pushing:** show the commit summary and wait for approval.
 - **Never push with `--force` to `master`.** Feature branches are fine.
 - Spec must exist and be reviewed before implementation starts.
 
