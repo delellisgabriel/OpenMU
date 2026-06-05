@@ -168,6 +168,14 @@ internal partial class CharacterClassInitialization : InitializerBase
         baseAttributeValues.Add(this.CreateConstValueAttribute(-1, Stats.HasDoubleWield));
         baseAttributeValues.Add(this.CreateConstValueAttribute(1, Stats.DefenseDecrement));
 
+        // PvP class vs class damage receive multipliers — default 1.0 (neutral).
+        baseAttributeValues.Add(this.CreateConstValueAttribute(1.0f, Stats.DamageReceiveFromDarkKnightDecrement));
+        baseAttributeValues.Add(this.CreateConstValueAttribute(1.0f, Stats.DamageReceiveFromDarkWizardDecrement));
+        baseAttributeValues.Add(this.CreateConstValueAttribute(1.0f, Stats.DamageReceiveFromFairyElfDecrement));
+        baseAttributeValues.Add(this.CreateConstValueAttribute(1.0f, Stats.DamageReceiveFromMagicGladiatorDecrement));
+        baseAttributeValues.Add(this.CreateConstValueAttribute(1.0f, Stats.DamageReceiveFromDarkLordDecrement));
+        baseAttributeValues.Add(this.CreateConstValueAttribute(1.0f, Stats.DamageReceiveFromRageFighterDecrement));
+
         if (isMaster)
         {
             baseAttributeValues.Add(this.CreateConstValueAttribute(1, Stats.MasterPointsPerLevelUp));

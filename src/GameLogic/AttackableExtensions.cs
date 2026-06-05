@@ -205,6 +205,15 @@ public static class AttackableExtensions
             dmg = (int)(dmg * defender.Attributes[Stats.DamageReceiveDecrement]);
         }
 
+        if (isPvp && attackerPlayer is not null && dmg > 1)
+        {
+            var classReductionStat = GetClassDamageReceiveStat(attackerPlayer);
+            if (classReductionStat is not null)
+            {
+                dmg = (int)(dmg * defender.Attributes[classReductionStat]);
+            }
+        }
+
         if (skill != null)
         {
             var multiplier = attacker.Attributes[Stats.SkillMultiplier];
@@ -898,6 +907,22 @@ public static class AttackableExtensions
                 await observable.ForEachWorldObserverAsync<IObjectMovedPlugIn>(p => p.ObjectMovedAsync(walkSupporter, MoveType.Instant), true).ConfigureAwait(false);
             }
         }
+    }
+
+    private static AttributeDefinition? GetClassDamageReceiveStat(Player attacker)
+    {
+        // Class numbers are defined in CharacterClassNumber (Persistence.Initialization).
+        // We use raw byte values here to avoid a dependency from GameLogic on that layer.
+        return attacker.SelectedCharacter?.CharacterClass?.Number switch
+        {
+            4 or 6 or 7   => Stats.DamageReceiveFromDarkKnightDecrement,    // DarkKnight / BladeKnight / BladeMaster
+            0 or 2 or 3   => Stats.DamageReceiveFromDarkWizardDecrement,    // DarkWizard / SoulMaster / GrandMaster
+            8 or 10 or 11 => Stats.DamageReceiveFromFairyElfDecrement,      // FairyElf / MuseElf / HighElf
+            12 or 13      => Stats.DamageReceiveFromMagicGladiatorDecrement, // MagicGladiator / DuelMaster
+            16 or 17      => Stats.DamageReceiveFromDarkLordDecrement,       // DarkLord / LordEmperor
+            24 or 25      => Stats.DamageReceiveFromRageFighterDecrement,    // RageFighter / FistMaster
+            _             => null,
+        };
     }
 
     private static int GetMasterSkillTreePhysicalPassiveDamageBonus(IAttacker attacker, bool preBuffsStage)

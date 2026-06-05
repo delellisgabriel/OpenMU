@@ -1,7 +1,7 @@
 # Spec: Class vs Class PvP Damage Multipliers
 
 ## Status
-`draft`
+`implemented` — branch `custom/pvp-balance`
 
 ## Problem
 OpenMU Season 6 Ep3 has no mechanism to apply different damage multipliers based on attacker/defender class combinations. This leads to known imbalances:

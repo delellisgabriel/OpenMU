@@ -804,6 +804,36 @@ public class Stats
     public static AttributeDefinition DamageReceiveHorseDecrement { get; } = new(new Guid("041B2811-05C0-49DE-B083-4D1FBD7E6286"), "Damage Receive From Dark Horse Multiplier", string.Empty);
 
     /// <summary>
+    /// Gets the PvP damage receive multiplier when attacked by a Dark Knight (or evolution).
+    /// </summary>
+    public static AttributeDefinition DamageReceiveFromDarkKnightDecrement { get; } = new(new Guid("C1A2B3C4-0001-0001-0001-000000000001"), "PvP Damage Receive From Dark Knight Multiplier", "Multiplier applied to incoming PvP damage when the attacker is a Dark Knight, Blade Knight, or Blade Master.");
+
+    /// <summary>
+    /// Gets the PvP damage receive multiplier when attacked by a Dark Wizard (or evolution).
+    /// </summary>
+    public static AttributeDefinition DamageReceiveFromDarkWizardDecrement { get; } = new(new Guid("C1A2B3C4-0002-0002-0002-000000000002"), "PvP Damage Receive From Dark Wizard Multiplier", "Multiplier applied to incoming PvP damage when the attacker is a Dark Wizard, Soul Master, or Grand Master.");
+
+    /// <summary>
+    /// Gets the PvP damage receive multiplier when attacked by a Fairy Elf (or evolution).
+    /// </summary>
+    public static AttributeDefinition DamageReceiveFromFairyElfDecrement { get; } = new(new Guid("C1A2B3C4-0003-0003-0003-000000000003"), "PvP Damage Receive From Fairy Elf Multiplier", "Multiplier applied to incoming PvP damage when the attacker is a Fairy Elf, Muse Elf, or High Elf.");
+
+    /// <summary>
+    /// Gets the PvP damage receive multiplier when attacked by a Magic Gladiator (or evolution).
+    /// </summary>
+    public static AttributeDefinition DamageReceiveFromMagicGladiatorDecrement { get; } = new(new Guid("C1A2B3C4-0004-0004-0004-000000000004"), "PvP Damage Receive From Magic Gladiator Multiplier", "Multiplier applied to incoming PvP damage when the attacker is a Magic Gladiator or Duel Master.");
+
+    /// <summary>
+    /// Gets the PvP damage receive multiplier when attacked by a Dark Lord (or evolution).
+    /// </summary>
+    public static AttributeDefinition DamageReceiveFromDarkLordDecrement { get; } = new(new Guid("C1A2B3C4-0005-0005-0005-000000000005"), "PvP Damage Receive From Dark Lord Multiplier", "Multiplier applied to incoming PvP damage when the attacker is a Dark Lord or Lord Emperor.");
+
+    /// <summary>
+    /// Gets the PvP damage receive multiplier when attacked by a Rage Fighter (or evolution).
+    /// </summary>
+    public static AttributeDefinition DamageReceiveFromRageFighterDecrement { get; } = new(new Guid("C1A2B3C4-0006-0006-0006-000000000006"), "PvP Damage Receive From Rage Fighter Multiplier", "Multiplier applied to incoming PvP damage when the attacker is a Rage Fighter or Fist Master.");
+
+    /// <summary>
     /// Gets the total armor damage decrease (receive) attribute definition.
     /// <remarks>Includes the sum of excellent, harmony, and socket DD options.</remarks>
     /// </summary>

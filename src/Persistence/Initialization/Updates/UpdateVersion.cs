@@ -423,6 +423,11 @@ public enum UpdateVersion
     /// </summary>
     AddRandomExperienceConfigAttributesSeason6 = 83,
 
+    /// <summary>
+    /// The version of the <see cref="AddPvpClassMultipliersUpdatePlugIn"/>.
+    /// </summary>
+    AddPvpClassMultipliersSeason6 = 84,
+
     // -----------------------------------------------------------------------
     // Custom versions start at 100 to avoid conflicts with upstream (1–99).
     // -----------------------------------------------------------------------
