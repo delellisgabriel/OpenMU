@@ -1,5 +1,10 @@
 # OpenMU — Custom Server Context
 
+## Working Agreement
+- **Never commit and push in the same step.** Always commit first, show the diff summary, and wait for explicit approval before pushing.
+- **Never push with `--force` to `master`.** Feature branches are fine.
+- Spec must exist and be reviewed before implementation starts.
+
 ## What this project is
 A fork of [MUnique/OpenMU](https://github.com/MUnique/OpenMU) — an open-source C#/.NET reimplementation of the MU Online MMORPG server targeting **Season 6 Episode 3**.
 
