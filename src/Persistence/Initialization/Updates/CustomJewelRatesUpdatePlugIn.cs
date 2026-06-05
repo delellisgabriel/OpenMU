@@ -5,8 +5,8 @@
 namespace MUnique.OpenMU.Persistence.Initialization.Updates;
 
 using System.Runtime.InteropServices;
+using System.Text.Json.Nodes;
 using MUnique.OpenMU.DataModel.Configuration;
-using MUnique.OpenMU.GameLogic.PlayerActions.ItemConsumeActions;
 using MUnique.OpenMU.PlugIns;
 
 /// <summary>
@@ -55,14 +55,20 @@ public class CustomJewelRatesUpdatePlugIn : UpdatePlugInBase
             return ValueTask.CompletedTask;
         }
 
-        var config = plugInConfig.GetConfiguration<UpgradeItemLevelConfiguration>(null)
-            ?? new UpgradeItemLevelConfiguration();
+        // Use JsonNode to patch only the scalar fields we care about.
+        // Deserializing into a typed object fails because AllowedItems/DisallowedItems
+        // use $id/$values reference format that requires a non-null reference handler.
+        var json = JsonNode.Parse(plugInConfig.CustomConfiguration ?? "{}")?.AsObject();
+        if (json is null)
+        {
+            return ValueTask.CompletedTask;
+        }
 
-        config.SuccessRatePercentage = 70;
-        config.SuccessRateBonusWithLuckPercentage = 30;
-        config.ResetToLevel0WhenFailMinLevel = 8;
+        json["SuccessRatePercentage"] = 70;
+        json["SuccessRateBonusWithLuckPercentage"] = 30;
+        json["ResetToLevel0WhenFailMinLevel"] = 8;
 
-        plugInConfig.SetConfiguration(config, null);
+        plugInConfig.CustomConfiguration = json.ToJsonString(new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
 
         return ValueTask.CompletedTask;
     }

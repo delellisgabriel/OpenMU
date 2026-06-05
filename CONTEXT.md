@@ -1,5 +1,10 @@
 # OpenMU — Custom Server Context
 
+## Key Docs
+- `docs/verification.md` — how to verify each custom update applied correctly (admin panel + DB queries)
+- `docs/specs/pvp-balance.md` — PvP class multiplier spec
+- `docs/specs/server-configuration.md` — server rates and jewel config spec
+
 ## What this project is
 A fork of [MUnique/OpenMU](https://github.com/MUnique/OpenMU) — an open-source C#/.NET reimplementation of the MU Online MMORPG server targeting **Season 6 Episode 3**.
 
