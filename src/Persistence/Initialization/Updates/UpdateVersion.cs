@@ -422,4 +422,18 @@ public enum UpdateVersion
     /// The version of the <see cref="AddRandomExperienceConfigAttributesPlugInSeason6"/>.
     /// </summary>
     AddRandomExperienceConfigAttributesSeason6 = 83,
+
+    // -----------------------------------------------------------------------
+    // Custom versions start at 100 to avoid conflicts with upstream (1–99).
+    // -----------------------------------------------------------------------
+
+    /// <summary>
+    /// The version of the <see cref="CustomServerRatesUpdatePlugIn"/>.
+    /// </summary>
+    CustomServerRates = 100,
+
+    /// <summary>
+    /// The version of the <see cref="CustomJewelRatesUpdatePlugIn"/>.
+    /// </summary>
+    CustomJewelRates = 101,
 }

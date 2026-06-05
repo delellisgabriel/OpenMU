@@ -37,7 +37,8 @@ public abstract class GameConfigurationInitializerBase : InitializerBase
     /// <inheritdoc />
     public override void Initialize()
     {
-        this.GameConfiguration.ExperienceRate = 1.0f;
+        this.GameConfiguration.ExperienceRate = 1000f;
+        this.GameConfiguration.MasterExperienceRate = 1000f;
         this.GameConfiguration.MinimumMonsterLevelForMasterExperience = 95;
         this.GameConfiguration.MaximumLevel = 400;
         this.GameConfiguration.MaximumMasterLevel = 200;
@@ -47,7 +48,7 @@ public abstract class GameConfigurationInitializerBase : InitializerBase
         this.GameConfiguration.MaximumVaultMoney = int.MaxValue;
         this.GameConfiguration.PreventExperienceOverflow = false;
         this.GameConfiguration.ClampMoneyOnPickup = false;
-        this.GameConfiguration.ExcellentItemDropLevelDelta = 25;
+        this.GameConfiguration.ExcellentItemDropLevelDelta = 10;
         this.GameConfiguration.RecoveryInterval = 3000;
         this.GameConfiguration.MaximumLetters = 50;
         this.GameConfiguration.LetterSendPrice = 1000;
@@ -57,7 +58,7 @@ public abstract class GameConfigurationInitializerBase : InitializerBase
         this.GameConfiguration.MaximumPartySize = 5;
         this.GameConfiguration.ShouldDropMoney = true;
         this.GameConfiguration.ItemDropDuration = TimeSpan.FromSeconds(60);
-        this.GameConfiguration.MaximumItemOptionLevelDrop = 3;
+        this.GameConfiguration.MaximumItemOptionLevelDrop = 4;
         this.GameConfiguration.DamagePerOneItemDurability = 2000;
         this.GameConfiguration.DamagePerOnePetDurability = 100000;
         this.GameConfiguration.HitsPerOneItemDurability = 10000;
