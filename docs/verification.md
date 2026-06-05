@@ -82,3 +82,47 @@ docker exec database psql -U postgres -d openmu -c 'SELECT ad."Designation", cva
 ```
 
 MagicGladiator is class number `12`. You should see `0.75` next to `PvP Damage Receive From Dark Wizard Multiplier`.
+
+---
+
+## 7. In-game PvP damage testing
+
+Use two client instances with existing test accounts to measure live damage numbers.
+
+### Class numbers reference
+| # | Class |
+|---|---|
+| 0 | Dark Wizard |
+| 4 | Dark Knight |
+| 8 | Fairy Elf |
+| 12 | Magic Gladiator |
+| 16 | Dark Lord |
+| 24 | Rage Fighter |
+
+### Test accounts available
+| Account | Characters | Level |
+|---|---|---|
+| `testgm` | testgmDk, testgmDw, testgmElf, testgmMg, testgmDl | 400 |
+| `testgm2` | testgm2Rf, testgm2Sum | 400 |
+| `test400` | test400Dk, test400Dw, test400Elf, test400Mg, test400Dl | 400 |
+| `test0–test9` | one of each class | 1–90 |
+
+All passwords = username.
+
+### Setup
+1. Open `MUnique.OpenMU.ClientLauncher.exe` **twice** — MU supports multiple instances
+2. **Window 1 (attacker):** login as `testgm`, pick your attacker class
+3. **Window 2 (defender):** login as `test400`, pick your target class — **do not move**
+4. Both go to **Lorencia**, right-click defender → **Duel request**, defender accepts
+5. Attacker hits the defender and reads floating damage numbers
+
+### How to verify a multiplier change
+1. Note baseline damage at `1.0`
+2. Admin panel → **Configuration → Character Classes → [defender class] → Base Attribute Values**
+3. Change `PvP Damage Receive From [attacker class] Multiplier` to e.g. `0.75`
+4. Hit again — damage should drop ~25%
+5. Confirm via DB:
+```powershell
+# Replace 12 with the defender's class number
+docker exec database psql -U postgres -d openmu -c 'SELECT ad."Designation", cva."Value" FROM config."ConstValueAttribute" cva JOIN config."AttributeDefinition" ad ON ad."Id" = cva."DefinitionId" JOIN config."CharacterClass" cc ON cc."Id" = cva."CharacterClassId" WHERE cc."Number" = 12 AND ad."Designation" LIKE $$%PvP%$$'
+```
